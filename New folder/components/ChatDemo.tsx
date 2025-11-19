@@ -68,7 +68,7 @@ const DemoChat = () => {
         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary-500/50 to-transparent opacity-50"></div>
 
         <div className="bg-slate-800 p-2 rounded-full relative group">
-           <div className="absolute inset-0 bg-primary-500/20 rounded-full blur-md group-hover:bg-primary-500/40 transition-all"></div>
+           <div className="absolute inset-0 bg-primary-500/20 rounded-full blur-md group-hover:bg-primary-500/40 transition-all z-50"></div>
            <Bot className="w-5 h-5 text-primary-400 relative z-10" />
         </div>
         <div>
@@ -85,7 +85,7 @@ const DemoChat = () => {
       {/* Chat Area - Attached Ref here */}
       <div 
         ref={scrollContainerRef}
-        className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-800/50 scroll-smooth"
+        className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-800/50 scroll-smooth z-50"
       >
         {messages.map((msg, idx) => (
           <motion.div 
