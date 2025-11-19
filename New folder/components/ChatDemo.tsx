@@ -137,7 +137,7 @@ const DemoChat = () => {
       </div>
 
       {/* Input Area */}
-      <div className="p-3 bg-slate-900 border-t border-slate-700">
+      <div className="p-3 bg-slate-900 border-t border-slate-700 z-50">
         <div className="flex gap-2">
           <input 
             type="text" 
