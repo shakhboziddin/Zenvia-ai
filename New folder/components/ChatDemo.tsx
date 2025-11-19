@@ -61,9 +61,9 @@ const DemoChat = () => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto bg-slate-800 rounded-2xl overflow-hidden shadow-2xl border border-slate-700/50 flex flex-col h-[500px]">
+    <div className="w-full max-w-md mx-auto bg-slate-800 rounded-2xl overflow-hidden shadow-2xl border border-slate-700/50 flex flex-col h-[500px] z-50">
       {/* Header */}
-      <div className="bg-slate-900/90 backdrop-blur-md p-4 border-b border-slate-700 flex items-center gap-3 relative overflow-hidden">
+      <div className="bg-slate-900/90 backdrop-blur-md p-4 border-b border-slate-700 flex items-center gap-3 relative overflow-hidden z-50">
         {/* Subtle top highlight */}
         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary-500/50 to-transparent opacity-50"></div>
 
