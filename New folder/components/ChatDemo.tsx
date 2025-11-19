@@ -65,15 +65,15 @@ const DemoChat = () => {
       {/* Header */}
       <div className="bg-slate-900/90 backdrop-blur-md p-4 border-b border-slate-700 flex items-center gap-3 relative overflow-hidden z-50">
         {/* Subtle top highlight */}
-        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary-500/50 to-transparent opacity-50"></div>
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary-500/50 to-transparent opacity-50 z-50" ></div>
 
         <div className="bg-slate-800 p-2 rounded-full relative group">
            <div className="absolute inset-0 bg-primary-500/20 rounded-full blur-md group-hover:bg-primary-500/40 transition-all z-50"></div>
            <Bot className="w-5 h-5 text-primary-400 relative z-10" />
         </div>
         <div>
-          <h3 className="font-semibold text-white text-sm tracking-wide">Zenvia Assistant</h3>
-          <div className="flex items-center gap-1.5 mt-0.5">
+          <h3 className="font-semibold text-white text-sm tracking-wide z-50">Zenvia Assistant</h3>
+          <div className="flex items-center gap-1.5 mt-0.5 z-50">
              <span className="relative flex h-2 w-2">
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
               </span>
