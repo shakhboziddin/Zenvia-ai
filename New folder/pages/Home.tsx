@@ -23,6 +23,47 @@ const FadeIn: React.FC<FadeInProps> = ({ children, delay = 0, className = "" }) 
   </motion.div>
 );
 
+const TypingText = () => {
+  const words = ["Sales", "Support", "Ops", "Growth", "AI"];
+  const [text, setText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [loopNum, setLoopNum] = useState(0);
+  const [typingSpeed, setTypingSpeed] = useState(150);
+
+  useEffect(() => {
+    const handleTyping = () => {
+      const i = loopNum % words.length;
+      const fullText = words[i];
+
+      setText(isDeleting 
+        ? fullText.substring(0, text.length - 1) 
+        : fullText.substring(0, text.length + 1)
+      );
+
+      setTypingSpeed(isDeleting ? 50 : 150);
+
+      if (!isDeleting && text === fullText) {        
+        setTimeout(() => setIsDeleting(true), 2000); 
+      } else if (isDeleting && text === '') {
+        setIsDeleting(false);
+        setLoopNum(loopNum + 1);
+      }
+    };
+
+    const timer = setTimeout(handleTyping, typingSpeed);
+    return () => clearTimeout(timer);
+  }, [text, isDeleting, loopNum, typingSpeed]);
+
+  return (
+    <span className="inline-flex items-center">
+      <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 via-primary-300 to-indigo-400 font-extrabold pb-2">
+        {text} Agents
+      </span>
+      <span className="ml-2 w-[4px] h-[0.8em] bg-primary-400 animate-pulse rounded-full shadow-[0_0_15px_rgba(45,212,191,0.8)]"></span>
+    </span>
+  );
+};
+
 const TestimonialSection = () => {
   const testimonials = [
     { 
@@ -201,10 +242,9 @@ const Home = () => {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10">
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left relative">
             
-            {/* BADGE: Static, no Shimmer Loop */}
+            {/* BADGE: Static */}
             <div className="relative inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/80 border border-slate-700/50 backdrop-blur-md mb-12 overflow-hidden group hover:border-primary-500/50 transition-colors cursor-default shadow-lg">
               <span className="relative flex h-2 w-2 mr-1">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-500"></span>
               </span>
               <span className="relative z-10 text-primary-100 text-sm font-medium group-hover:text-white transition-colors">
@@ -215,13 +255,11 @@ const Home = () => {
             <div className="min-h-[180px] sm:min-h-[220px] lg:min-h-[260px] flex flex-col justify-center lg:block mb-14 relative">
               <div>
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.1] drop-shadow-2xl">
-                  Deploy <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-primary-300 to-white bg-[length:200%_auto]">Intelligent</span>
+                  Deploy <span className="text-white">Intelligent</span>
                 </h1>
                 
-                <div className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] my-2">
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 via-teal-300 to-indigo-400 font-extrabold">
-                    AI Agents
-                  </span>
+                <div className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] my-2 h-[1.1em] flex items-center justify-center lg:justify-start">
+                   <TypingText />
                 </div>
 
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.1]">
