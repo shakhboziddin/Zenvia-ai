@@ -1,162 +1,115 @@
+"use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import { Send, Bot, User } from 'lucide-react';
-import { motion } from 'framer-motion';
+import React from "react";
+import Navbar from "@/components/Navbar";
+import DemoChat from "@/components/DemoChat";
+import { ArrowRight, Zap, Workflow, Sparkles } from "lucide-react";
+import Link from "next/link";
 
-const DemoChat = () => {
-  // Start with empty messages
-  const [messages, setMessages] = useState<{ role: 'user' | 'bot'; text: string }[]>([]);
-  const [input, setInput] = useState('');
-  // Start with isTyping true to simulate initial connection
-  const [isTyping, setIsTyping] = useState(true);
-  
-  // Ref for the scrollable container, NOT the bottom element
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  const scrollToBottom = () => {
-    if (scrollContainerRef.current) {
-      // This only scrolls the internal div, never the window
-      const { scrollHeight, clientHeight } = scrollContainerRef.current;
-      scrollContainerRef.current.scrollTo({
-        top: scrollHeight - clientHeight,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages, isTyping]);
-
-  // Effect to simulate the initial "typing" and then showing the welcome message
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsTyping(false);
-      setMessages([
-        { role: 'bot', text: "Hello! I'm Zenvia's AI Assistant. How can I automate your workflow today?" }
-      ]);
-    }, 2000); // 2 seconds delay for realism
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  const handleSend = () => {
-    if (!input.trim()) return;
-    
-    const userMsg = input;
-    setMessages(prev => [...prev, { role: 'user', text: userMsg }]);
-    setInput('');
-    setIsTyping(true);
-
-    // Simulate AI delay and response
-    setTimeout(() => {
-      let response = "I can help with that! To verify, you're looking to streamline customer support or sales?";
-      if (userMsg.toLowerCase().includes('sales')) response = "Great. Our AI Sales Assistant can qualify leads 24/7, book appointments, and sync directly to your CRM. Would you like to see a blueprint?";
-      if (userMsg.toLowerCase().includes('support')) response = "Understood. We can deploy an Agent that resolves 80% of tickets instantly using your knowledge base. It frees up your team for complex issues.";
-      if (userMsg.toLowerCase().includes('price') || userMsg.toLowerCase().includes('cost')) response = "Our pricing is tailored to your scale, starting with a basic automation tier. We usually see ROI within the first 30 days.";
-
-      setMessages(prev => [...prev, { role: 'bot', text: response }]);
-      setIsTyping(false);
-    }, 1500);
-  };
-
+export default function Home() {
   return (
-    <div className="w-full max-w-md mx-auto bg-slate-800 rounded-2xl overflow-hidden shadow-2xl border border-slate-700/50 flex flex-col h-[500px]">
-      {/* Header */}
-      <div className="bg-slate-900/90 backdrop-blur-md p-4 border-b border-slate-700 flex items-center gap-3 relative overflow-hidden">
-        {/* Subtle top highlight */}
-        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary-500/50 to-transparent opacity-50"></div>
+    <div className="relative w-full min-h-screen bg-slate-950 text-white overflow-x-hidden">
 
-        <div className="bg-slate-800 p-2 rounded-full relative group">
-           <div className="absolute inset-0 bg-primary-500/20 rounded-full blur-md group-hover:bg-primary-500/40 transition-all"></div>
-           <Bot className="w-5 h-5 text-primary-400 relative z-10" />
-        </div>
-        <div>
-          <h3 className="font-semibold text-white text-sm tracking-wide">Zenvia Assistant</h3>
-          <div className="flex items-center gap-1.5 mt-0.5">
-             <span className="relative flex h-2 w-2">
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-              </span>
-            <span className="text-xs text-green-400 font-medium">Online</span>
-          </div>
-        </div>
+      {/* Background Layer (safe) */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-primary-900 opacity-40" />
+        <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-primary-500/20 rounded-full blur-[180px]" />
+        <div className="absolute bottom-10 left-10 w-[600px] h-[600px] bg-indigo-500/20 rounded-full blur-[160px]" />
       </div>
 
-      {/* Chat Area - Attached Ref here */}
-      <div 
-        ref={scrollContainerRef}
-        className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-800/50 scroll-smooth"
-      >
-        {messages.map((msg, idx) => (
-          <motion.div 
-            key={idx}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}
-          >
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${msg.role === 'user' ? 'bg-indigo-600' : 'bg-primary-600'}`}>
-              {msg.role === 'user' ? <User size={14} /> : <Bot size={14} />}
-            </div>
-            <div className={`p-3 rounded-2xl text-sm max-w-[80%] ${
-              msg.role === 'user' 
-                ? 'bg-indigo-600 text-white rounded-tr-none' 
-                : 'bg-slate-700 text-slate-100 rounded-tl-none'
-            }`}>
-              {msg.text}
-            </div>
-          </motion.div>
-        ))}
-        {isTyping && (
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex gap-3"
-          >
-             <div className="w-8 h-8 rounded-full bg-primary-600 flex items-center justify-center flex-shrink-0">
-              <Bot size={14} />
-            </div>
-            <div className="bg-slate-700 p-4 rounded-2xl rounded-tl-none flex items-center gap-1">
-              <motion.div
-                className="w-1.5 h-1.5 bg-slate-400 rounded-full"
-                animate={{ y: [0, -5, 0] }}
-                transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut" }}
-              />
-              <motion.div
-                className="w-1.5 h-1.5 bg-slate-400 rounded-full"
-                animate={{ y: [0, -5, 0] }}
-                transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
-              />
-              <motion.div
-                className="w-1.5 h-1.5 bg-slate-400 rounded-full"
-                animate={{ y: [0, -5, 0] }}
-                transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
-              />
-            </div>
-          </motion.div>
-        )}
+      {/* Navbar */}
+      <div className="relative z-[1000]">
+        <Navbar />
       </div>
 
-      {/* Input Area */}
-      <div className="p-3 bg-slate-900 border-t border-slate-700">
-        <div className="flex gap-2">
-          <input 
-            type="text" 
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            placeholder="Ask about automations..."
-            className="flex-1 bg-slate-800 text-white text-sm rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500 border border-slate-700 placeholder-slate-500"
+      {/* HERO SECTION */}
+      <section className="relative z-[2000] min-h-[95vh] flex flex-col justify-center items-center px-6 lg:px-20 pt-20 lg:pt-28 text-center">
+        
+        <h1 className="text-4xl lg:text-6xl font-extrabold tracking-tight leading-tight max-w-4xl">
+          Automate your business with an{" "}
+          <span className="text-primary-400">AI Agent</span>
+          <br />
+          that works <span className="text-indigo-400">24/7</span>
+        </h1>
+
+        <p className="mt-6 text-lg lg:text-xl text-slate-300 max-w-2xl">
+          Connect your systems, automate conversations, and boost revenue using intelligent AI workflows — without any engineering effort.
+        </p>
+
+        <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+          <Link
+            href="/demo"
+            className="px-6 py-3 rounded-xl bg-primary-600 hover:bg-primary-500 transition text-white font-medium text-lg flex items-center gap-2"
+          >
+            Book a Live Demo <ArrowRight size={18} />
+          </Link>
+
+          <Link
+            href="#"
+            className="px-6 py-3 rounded-xl bg-slate-800 border border-slate-600 hover:border-primary-500 hover:text-primary-400 transition text-white font-medium text-lg"
+          >
+            Learn More
+          </Link>
+        </div>
+
+        {/* FIXED CHAT — now clickable ALWAYS */}
+        <div className="relative hidden lg:block mt-16 z-[9999] pointer-events-auto">
+          <DemoChat />
+        </div>
+      </section>
+
+      {/* FEATURES */}
+      <section className="relative z-[2000] py-24 px-6 lg:px-20">
+        <h2 className="text-3xl lg:text-5xl font-bold text-center mb-14">
+          Why businesses choose our AI Agents
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          <FeatureCard
+            icon={<Zap className="w-8 h-8 text-primary-400" />}
+            title="Instant Automation"
+            description="Turn repetitive tasks into autonomous AI workflows without writing a single line of code."
           />
-          <button 
-            onClick={handleSend}
-            className="bg-primary-600 hover:bg-primary-500 text-white rounded-lg p-3 transition-colors"
-          >
-            <Send size={18} />
-          </button>
+          <FeatureCard
+            icon={<Workflow className="w-8 h-8 text-indigo-400" />}
+            title="Smart Integrations"
+            description="Connect with CRM, WhatsApp, email, internal tools, and custom APIs effortlessly."
+          />
+          <FeatureCard
+            icon={<Sparkles className="w-8 h-8 text-pink-400" />}
+            title="Human-Level Experience"
+            description="Provide personalized interactions that feel natural, consistent, and fast."
+          />
         </div>
-      </div>
+      </section>
+
+      {/* INTERACTIVE DEMO SECTION */}
+      <section className="relative z-[3000] py-24 px-6 lg:px-20 bg-slate-900/30 backdrop-blur-xl border-t border-slate-800">
+        <h2 className="text-3xl lg:text-5xl font-bold text-center mb-14">
+          See the AI Agent in Action
+        </h2>
+
+        {/* FIXED CHAT — demo section */}
+        <div className="max-w-md mx-auto relative z-[9999] pointer-events-auto">
+          <DemoChat />
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="relative z-[2000] p-10 text-center text-slate-400 border-t border-slate-800 mt-20">
+        © 2025 Zenvia AI — All Rights Reserved.
+      </footer>
     </div>
   );
-};
+}
 
-export default DemoChat;
+/* SUB-COMPONENTS */
+function FeatureCard({ icon, title, description }: any) {
+  return (
+    <div className="bg-slate-900/40 backdrop-blur-xl p-7 rounded-2xl border border-slate-700 hover:border-primary-500 transition">
+      <div className="mb-4">{icon}</div>
+      <h3 className="text-xl font-semibold mb-2">{title}</h3>
+      <p className="text-slate-300">{description}</p>
+    </div>
+  );
+}
