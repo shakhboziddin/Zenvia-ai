@@ -47,27 +47,17 @@ const Book = () => {
           </ul>
         </div>
 
-        {/* Right Side: Calendar/Form Placeholder */}
-        <div className="md:w-3/5 p-8 md:p-12 bg-white">
-          {/* In a real app, this would be a Calendly embed */}
-          <div className="text-center h-full flex flex-col justify-center items-center min-h-[400px]">
-             <h2 className="text-slate-900 text-2xl font-bold mb-2">Select a Time</h2>
-             <p className="text-slate-500 mb-8">Choose a slot that works for your timezone.</p>
-             
-             <div className="w-full max-w-md bg-slate-50 rounded-xl border border-slate-200 p-8 mb-6 shadow-inner">
-                <div className="space-y-3">
-                   <div className="h-10 bg-slate-200 rounded w-3/4 mx-auto animate-pulse"></div>
-                   <div className="h-10 bg-slate-200 rounded w-full mx-auto animate-pulse delay-75"></div>
-                   <div className="h-10 bg-slate-200 rounded w-5/6 mx-auto animate-pulse delay-150"></div>
-                </div>
-                <p className="text-slate-400 text-sm mt-4">[Calendly Widget Loading...]</p>
-             </div>
-             
-             <button className="w-full max-w-xs bg-primary-600 hover:bg-primary-700 text-white font-bold py-4 rounded-xl transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-               Confirm Booking
-             </button>
+        {/* Right Side: Calendly Embed */}
+        <div className="md:w-3/5 p-8 md:p-12 bg-white flex justify-center items-start">
+          <div style={{ width: "100%", minHeight: "650px" }}>
+            <iframe
+              src="https://calendly.com/zenvia-ai/new-meeting?embed_domain=localhost&embed_type=Inline"
+              frameBorder="0"
+              style={{ width: "100%", height: "650px" }}
+            ></iframe>
           </div>
         </div>
+
       </motion.div>
     </div>
   );
